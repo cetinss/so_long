@@ -6,7 +6,7 @@
 /*   By: sencetin <sencetin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/20 16:18:23 by sencetin          #+#    #+#             */
-/*   Updated: 2025/03/20 16:58:33 by sencetin         ###   ########.fr       */
+/*   Updated: 2025/03/21 00:11:18 by sencetin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,25 +73,11 @@ static void	check_flood_fill(t_game game, char **map)
 void	check_accessability(t_game game)
 {
 	char	**map;
-	int		x;
-	int		y;
-
-	y = 0;
-	while (y < game.column)
-	{
-		x = 0;
-		while (x < game.line)
-		{
-			if (game.map[y][x] == 'P')
-				break;
-			x++;
-		}
-		if (game.map[y][x] == 'P')
-			break;
-		y++;
-	}
+	
+	if (game.x < 0 || game.y < 0)
+		ft_error(game, "Error: player position can not find!\n");
 	map = copy_map(game);
-	flood_fill(map, x, y);
+	flood_fill(map, game.x, game.y);
 	check_flood_fill(game, map);
 	free_map(map);
 }

@@ -6,7 +6,7 @@
 /*   By: sencetin <sencetin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/19 16:15:13 by sencetin          #+#    #+#             */
-/*   Updated: 2025/03/20 16:43:04 by sencetin         ###   ########.fr       */
+/*   Updated: 2025/03/21 01:24:31 by sencetin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,14 +25,15 @@ void	inital(t_game *game)
 	game->collectible = 0;
 	game->player = NULL;
 	game->door = NULL;
-	game->coin = NULL;
+	game->carrot = NULL;
 	game->soil = NULL;
 	game->wall = NULL;
 	game->mlx = NULL;
 	game->win = NULL;
+	game->filename = NULL;
 }
 
-t_game read_map(char **map)
+t_game read_map(char **argv)
 {
 	t_game	maps;
 	char	*str;
@@ -40,9 +41,9 @@ t_game read_map(char **map)
 	char	*cpy;
 	int		fd;
 
-	fd = open(map[1], O_RDONLY);
+	fd = open(argv[1], O_RDONLY);
 	if (fd < 0)
-		exit (0);
+		exit (1);
 	line = ft_strdup("");
 	str = get_next_line(fd);
 	while (str)
@@ -55,6 +56,7 @@ t_game read_map(char **map)
 	}
 	fd = close(fd);
 	maps.map = ft_split(line, '\n');
+	maps.filename = argv[1];
 	free (line);
 	return (maps);
 }
@@ -65,9 +67,17 @@ int main(int ac, char **av)
 	if (ac != 2)
 		return (INVALID_ARG);
 	inital(&game);
+	game.filename = av[1];
 	game = read_map(av);
 	if (!game.map || !game.map[0])
 		ft_error(game , "Map file is empty!\n");
+	initialize_player_position(&game);
 	game = control(game);
+	init_window(&game);
+	load_textures(&game);
+	render_map(&game);
+	mlx_hook(game.win, 2, 1, key_event, &game);
+	mlx_hook(game.win, 17, 0, close_window, &game);
+	mlx_loop(game.mlx);
 	return (0);
 }

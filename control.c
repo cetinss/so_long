@@ -6,11 +6,12 @@
 /*   By: sencetin <sencetin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/20 13:04:09 by sencetin          #+#    #+#             */
-/*   Updated: 2025/03/20 16:42:30 by sencetin         ###   ########.fr       */
+/*   Updated: 2025/03/21 01:31:46 by sencetin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "so_long.h"
+#include <stdio.h>
 
 static t_game	map_size(t_game game)
 {
@@ -69,13 +70,14 @@ static void	wall_control(t_game game)
 	}
 }
 
-static void	map_content(t_game game)
+static t_game	map_content(t_game game)
 {
 	int	player_count;
 	int	i;
 	int	j;
 
 	i = 0;
+	player_count = 0;
 	while (game.map[i])
 	{
 		j = 0;
@@ -95,14 +97,22 @@ static void	map_content(t_game game)
 	}
 	if (!(player_count == 1 && game.collectible >= 1 && game.exit == 1))
 		ft_error(game , "Invalid number of player, exit, or collectible!\n");
+	return (game);
 }
 
 t_game	control(t_game game)
 {
+	int len;
+
+	if (!game.filename)
+		ft_error(game, "Error: game.filename is NULL!\n");
+	len = ft_strlen2(game.filename);
+	if (len < 4 || ft_strncmp(game.filename + len - 4, ".ber", 4) != 0)
+    	ft_error(game, "Invalid file extension! Must be .ber\n");
 	game = map_size(game);
 	is_rectangle(game);
 	wall_control(game);
-	map_content(game);
+	game = map_content(game);
 	check_accessability(game);
 	return (game);
 }
