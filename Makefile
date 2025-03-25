@@ -24,7 +24,7 @@ all: $(NAME)
 $(NAME): $(OBJ_FILES)
 	@$(MAKE) -C libft --silent
 	@$(MAKE) -C minilibx-linux --silent
-	@$(CC) $(CFLAGS) $(MLX_FLAGS) $(OBJ_FILES) $(MINILIBX) ./libft/libft.a -o $(NAME)
+	@$(CC) $(CFLAGS) $(OBJ_FILES) ./libft/libft.a $(MINILIBX) $(MLX_FLAGS) -o $(NAME)
 
 clean:
 	@rm -f $(OBJ_FILES)

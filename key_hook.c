@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   key_hook.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sencetin <sencetin@student.42.fr>          +#+  +:+       +#+        */
+/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/20 22:16:25 by sencetin          #+#    #+#             */
-/*   Updated: 2025/03/21 01:33:31 by sencetin         ###   ########.fr       */
+/*   Updated: 2025/03/25 16:33:24 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,8 @@ static void	move_count(int move)
 
 void initialize_player_position(t_game *game)
 {
-    int i, j;
+    int	i;
+	int	j;
 
     for (i = 0; game->map[i]; i++)
     {
@@ -31,7 +32,6 @@ void initialize_player_position(t_game *game)
             {
                 game->x = j;
                 game->y = i;
-                printf("Start Position: x=%d, y=%d\n", game->x, game->y);
                 return;
             }
         }
@@ -47,15 +47,15 @@ static void	update_player_position(t_game *game, int dx, int dy)
 			game->collectible--;
 		if (game->map[game->y + dy][game->x + dx] == 'E' && game->collectible == 0)
 		{
-            printf("Congratulations! You have completed the game with %d moves!\n", game->move);
+            win_message(game->move);
             game->move++;
 			close_window(game);
 			return ;
 		}
 		else if (game->map[game->y + dy][game->x + dx] == 'E'&& game->collectible > 0)
 			return ;
-		move_count(game->move);
 		game->move++;
+		move_count(game->move);
 		game->map[game->y][game->x] = '0';
 		game->map[game->y + dy][game->x + dx] = 'P';
 		game->y += dy;

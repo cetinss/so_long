@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   control2.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sencetin <sencetin@student.42.fr>          +#+  +:+       +#+        */
+/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/20 16:18:23 by sencetin          #+#    #+#             */
-/*   Updated: 2025/03/21 00:11:18 by sencetin         ###   ########.fr       */
+/*   Updated: 2025/03/24 16:53:31 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,7 @@ void	check_accessability(t_game game)
 	char	**map;
 	
 	if (game.x < 0 || game.y < 0)
-		ft_error(game, "Error: player position can not find!\n");
+		ft_error(game, "Player position can not find!\n");
 	map = copy_map(game);
 	flood_fill(map, game.x, game.y);
 	check_flood_fill(game, map);

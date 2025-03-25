@@ -3,15 +3,24 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sencetin <sencetin@student.42.fr>          +#+  +:+       +#+        */
+/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/19 16:15:13 by sencetin          #+#    #+#             */
-/*   Updated: 2025/03/21 01:24:31 by sencetin         ###   ########.fr       */
+/*   Updated: 2025/03/25 16:52:48 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "so_long.h"
 #include <stdio.h>
+
+void	win_message(int moves)
+{
+	ft_putstr_fd("\n🎉 Congratulations! 🎉\n", 1);
+	ft_putstr_fd("You completed the game in ", 1);
+	ft_putnbr_fd(moves, 1);
+	ft_putstr_fd(" moves!\n", 1);
+	ft_putstr_fd("Thanks for playing So_Long 💚\n\n", 1);
+}
 
 void	inital(t_game *game)
 {
@@ -23,6 +32,7 @@ void	inital(t_game *game)
 	game->y = 0;
 	game->exit = 0;
 	game->collectible = 0;
+	game->p = 0;
 	game->player = NULL;
 	game->door = NULL;
 	game->carrot = NULL;
@@ -33,9 +43,18 @@ void	inital(t_game *game)
 	game->filename = NULL;
 }
 
-t_game read_map(char **argv)
+int	check_file_extension(char *filename)
 {
-	t_game	maps;
+	int	len;
+
+	len = ft_strlen(filename);
+	if (len < 4 || ft_strncmp(filename + len - 4, ".ber", 4) != 0)
+		return (0);
+	return (1);
+}
+
+t_game read_map(t_game game, char **argv)
+{
 	char	*str;
 	char	*line;
 	char	*cpy;
@@ -54,11 +73,11 @@ t_game read_map(char **argv)
 		free(cpy);
 		str = get_next_line(fd);
 	}
-	fd = close(fd);
-	maps.map = ft_split(line, '\n');
-	maps.filename = argv[1];
+	close(fd);
+	game.map = ft_split(line, '\n');
+	game.filename = argv[1];
 	free (line);
-	return (maps);
+	return (game);
 }
 
 int main(int ac, char **av)
@@ -66,9 +85,14 @@ int main(int ac, char **av)
 	t_game	game;
 	if (ac != 2)
 		return (INVALID_ARG);
+	if (!check_file_extension(av[1]))
+	{
+		ft_putstr_fd("Error: File extension must be .ber\n", 2);
+		return (1);
+	}
 	inital(&game);
 	game.filename = av[1];
-	game = read_map(av);
+	game = read_map(game, av);
 	if (!game.map || !game.map[0])
 		ft_error(game , "Map file is empty!\n");
 	initialize_player_position(&game);
