@@ -6,7 +6,7 @@
 /*   By: sencetin <sencetin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/20 22:16:25 by sencetin          #+#    #+#             */
-/*   Updated: 2025/03/26 13:27:08 by sencetin         ###   ########.fr       */
+/*   Updated: 2025/03/26 13:38:03 by sencetin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,21 +43,22 @@ void	initialize_player_position(t_game *game)
 
 static void	update_player_position(t_game *game, int a, int b)
 {
-	game->move++;
-	move_count(game->move);
 	if (game->map[game->y + b][game->x + a] != '1')
 	{
 		if (game->map[game->y + b][game->x + a] == 'C')
 			game->collectible--;
 		if (game->map[game->y + b][game->x + a] == 'E' && game->collectible == 0)
 		{
-            win_message(game->move);
             game->move++;
+			move_count(game->move);
+            win_message(game->move);
 			close_window(game);
 			return ;
 		}
-		else if (game->map[game->y + b][game->x + a] == 'E'&& game->collectible > 0)
+		if (game->map[game->y + b][game->x + a] == 'E'&& game->collectible > 0)
 			return ;
+		game->move++;
+		move_count(game->move);
 		game->map[game->y][game->x] = '0';
 		game->map[game->y + b][game->x + a] = 'P';
 		game->y += b;
