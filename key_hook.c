@@ -3,15 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   key_hook.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: sencetin <sencetin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/20 22:16:25 by sencetin          #+#    #+#             */
-/*   Updated: 2025/03/25 16:33:24 by marvin           ###   ########.fr       */
+/*   Updated: 2025/03/26 13:18:35 by sencetin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "so_long.h"
-#include <stdio.h>
 
 static void	move_count(int move)
 {
@@ -19,54 +18,57 @@ static void	move_count(int move)
 	write(1, "\n", 1);
 }
 
-void initialize_player_position(t_game *game)
+void	initialize_player_position(t_game *game)
 {
-    int	i;
+	int	i;
 	int	j;
 
-    for (i = 0; game->map[i]; i++)
-    {
-        for (j = 0; game->map[i][j]; j++)
-        {
-            if (game->map[i][j] == 'P')
-            {
-                game->x = j;
-                game->y = i;
-                return;
-            }
-        }
-    }
-    ft_error(*game, "Error: no player!\n");
+	i = 0;
+	while (game->map[i])
+	{
+		j = 0;
+		while (game->map[i][j])
+		{
+			if (game->map[i][j] == 'P')
+			{
+				game->x = j;
+				game->y = i;
+				return ;
+			}
+			j++;
+		}
+		i++;
+	}
 }
 
-static void	update_player_position(t_game *game, int dx, int dy)
+static void	update_player_position(t_game *game, int a, int b)
 {
-	if (game->map[game->y + dy][game->x + dx] != '1')
+	if (game->map[game->y + b][game->x + a] != '1')
 	{
-		if (game->map[game->y + dy][game->x + dx] == 'C')
+		if (game->map[game->y + b][game->x + a] == 'C')
 			game->collectible--;
-		if (game->map[game->y + dy][game->x + dx] == 'E' && game->collectible == 0)
+		if (game->map[game->y + b][game->x + a] == 'E' && game->collectible == 0)
 		{
             win_message(game->move);
             game->move++;
 			close_window(game);
 			return ;
 		}
-		else if (game->map[game->y + dy][game->x + dx] == 'E'&& game->collectible > 0)
+		else if (game->map[game->y + b][game->x + a] == 'E'&& game->collectible > 0)
 			return ;
 		game->move++;
 		move_count(game->move);
 		game->map[game->y][game->x] = '0';
-		game->map[game->y + dy][game->x + dx] = 'P';
-		game->y += dy;
-		game->x += dx;
+		game->map[game->y + b][game->x + a] = 'P';
+		game->y += b;
+		game->x += a;
 		render_map(game);
 	}
 }
 
 int	key_event(int keycode, t_game *game)
 {
-	if (keycode == 65307) /* ESC */
+	if (keycode == 65307)
 		close_window(game);
 	else if (keycode == 119 || keycode == 65362)
 		update_player_position(game, 0, -1);
@@ -79,7 +81,7 @@ int	key_event(int keycode, t_game *game)
 	return (0);
 }
 
-int close_window(t_game *game)
+int	close_window(t_game *game)
 {
 	if (game->player)
 		mlx_destroy_image(game->mlx, game->player);
@@ -100,5 +102,5 @@ int close_window(t_game *game)
 	}
 	free_map(game->map);
 	exit(0);
-    return (0);
+	return (0);
 }

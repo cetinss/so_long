@@ -3,24 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: sencetin <sencetin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/19 16:15:13 by sencetin          #+#    #+#             */
-/*   Updated: 2025/03/25 16:52:48 by marvin           ###   ########.fr       */
+/*   Updated: 2025/03/26 13:15:22 by sencetin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "so_long.h"
-#include <stdio.h>
-
-void	win_message(int moves)
-{
-	ft_putstr_fd("\n🎉 Congratulations! 🎉\n", 1);
-	ft_putstr_fd("You completed the game in ", 1);
-	ft_putnbr_fd(moves, 1);
-	ft_putstr_fd(" moves!\n", 1);
-	ft_putstr_fd("Thanks for playing So_Long 💚\n\n", 1);
-}
 
 void	inital(t_game *game)
 {
@@ -40,20 +30,46 @@ void	inital(t_game *game)
 	game->wall = NULL;
 	game->mlx = NULL;
 	game->win = NULL;
-	game->filename = NULL;
 }
 
-int	check_file_extension(char *filename)
+void	newline_check(char *line)
+{
+	int	len;
+	int	i;
+
+	len = ft_strlen(line);
+	i = 0;
+	while (i < len - 1)
+	{
+		if (line[i] == '\n' && line[i + 1] == '\n')
+		{
+			ft_putstr_fd("Error: Invalid map!\n", 2);
+			free(line);
+			exit(1);
+		}
+		i++;
+	}
+	if (line[0] == '\n' || line[len - 1] == '\n')
+	{
+		ft_putstr_fd("Error: Invalid map!\n", 2);
+		free(line);
+		exit(1);
+	}
+}
+
+void	check_file_extension(char *av)
 {
 	int	len;
 
-	len = ft_strlen(filename);
-	if (len < 4 || ft_strncmp(filename + len - 4, ".ber", 4) != 0)
-		return (0);
-	return (1);
+	len = ft_strlen(av);
+	if (len < 4 || ft_strncmp(av + len - 4, ".ber", 4) != 0)
+	{
+		ft_putstr_fd("Error: File extension must be .ber\n", 2);
+		exit (1);
+	}
 }
 
-t_game read_map(t_game game, char **argv)
+t_game	read_map(t_game game, char **argv)
 {
 	char	*str;
 	char	*line;
@@ -74,28 +90,23 @@ t_game read_map(t_game game, char **argv)
 		str = get_next_line(fd);
 	}
 	close(fd);
+	newline_check(line);
 	game.map = ft_split(line, '\n');
-	game.filename = argv[1];
 	free (line);
 	return (game);
 }
 
-int main(int ac, char **av)
+int	main(int ac, char **av)
 {
 	t_game	game;
+
 	if (ac != 2)
 		return (INVALID_ARG);
-	if (!check_file_extension(av[1]))
-	{
-		ft_putstr_fd("Error: File extension must be .ber\n", 2);
-		return (1);
-	}
+	check_file_extension(av[1]);
 	inital(&game);
-	game.filename = av[1];
 	game = read_map(game, av);
 	if (!game.map || !game.map[0])
-		ft_error(game , "Map file is empty!\n");
-	initialize_player_position(&game);
+		ft_error(game, "Map file is empty!\n");
 	game = control(game);
 	init_window(&game);
 	load_textures(&game);

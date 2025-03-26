@@ -6,7 +6,7 @@
 /*   By: sencetin <sencetin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/20 17:29:38 by sencetin          #+#    #+#             */
-/*   Updated: 2025/03/20 22:15:04 by sencetin         ###   ########.fr       */
+/*   Updated: 2025/03/26 10:19:01 by sencetin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,15 +25,13 @@ void	init_window(t_game *game)
 void	load_textures(t_game *game)
 {
 	int	x;
-	int	y;
 
 	x = 64;
-	y = 64;
-	game->player = mlx_xpm_file_to_image(game->mlx, "textures/player.xpm", &x, &y);
-	game->wall = mlx_xpm_file_to_image(game->mlx, "textures/wall.xpm", &x, &y);
-	game->carrot = mlx_xpm_file_to_image(game->mlx, "textures/carrot64.xpm", &x, &y);
-	game->door = mlx_xpm_file_to_image(game->mlx, "textures/exit.xpm", &x, &y);
-	game->soil = mlx_xpm_file_to_image(game->mlx, "textures/grass64.xpm", &x, &y);
+	game->player = mlx_xpm_file_to_image(game->mlx, "textures/player.xpm", &x, &x);
+	game->wall = mlx_xpm_file_to_image(game->mlx, "textures/wall.xpm", &x, &x);
+	game->carrot = mlx_xpm_file_to_image(game->mlx, "textures/carrot64.xpm", &x, &x);
+	game->door = mlx_xpm_file_to_image(game->mlx, "textures/exit.xpm", &x, &x);
+	game->soil = mlx_xpm_file_to_image(game->mlx, "textures/grass64.xpm", &x, &x);
 	if (!game->player || !game->wall || !game->carrot || !game->door || !game->soil)
 		ft_error(*game, "Texture loading failed!\n");
 }
