@@ -6,19 +6,19 @@
 /*   By: sencetin <sencetin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/20 13:05:45 by sencetin          #+#    #+#             */
-/*   Updated: 2025/03/26 13:19:09 by sencetin         ###   ########.fr       */
+/*   Updated: 2025/03/26 14:58:10 by sencetin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef SO_LONG_H
 # define SO_LONG_H
 
-#include <unistd.h>
-#include <fcntl.h>
-#include <stdlib.h>
-#include "./libft/libft.h"
-#include "./gnl/get_next_line.h"
-#include "./minilibx-linux/mlx.h"
+# include <unistd.h>
+# include <fcntl.h>
+# include <stdlib.h>
+# include "./libft/libft.h"
+# include "./gnl/get_next_line.h"
+# include "./minilibx-linux/mlx.h"
 
 # define INVALID_ARG 2
 
@@ -36,7 +36,7 @@ typedef struct s_game
 	void	*player;
 	void	*door;
 	void	*carrot;
-	void	*soil;
+	void	*floor;
 	void	*wall;
 	void	*mlx;
 	void	*win;
@@ -56,7 +56,7 @@ void	check_file_extension(char *filename);
 
 void	init_window(t_game *game);
 void	load_textures(t_game *game);
-void	render_map(t_game *game);
+void	render_map(t_game g);
 
 int		key_event(int keycode, t_game *game);
 int		close_window(t_game *game);

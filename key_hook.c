@@ -6,7 +6,7 @@
 /*   By: sencetin <sencetin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/20 22:16:25 by sencetin          #+#    #+#             */
-/*   Updated: 2025/03/26 13:38:03 by sencetin         ###   ########.fr       */
+/*   Updated: 2025/03/26 15:02:58 by sencetin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,15 +47,16 @@ static void	update_player_position(t_game *game, int a, int b)
 	{
 		if (game->map[game->y + b][game->x + a] == 'C')
 			game->collectible--;
-		if (game->map[game->y + b][game->x + a] == 'E' && game->collectible == 0)
+		if (game->map[game->y + b][game->x + a] == 'E'
+		&& game->collectible == 0)
 		{
-            game->move++;
+			game->move++;
 			move_count(game->move);
-            win_message(game->move);
+			win_message(game->move);
 			close_window(game);
 			return ;
 		}
-		if (game->map[game->y + b][game->x + a] == 'E'&& game->collectible > 0)
+		if (game->map[game->y + b][game->x + a] == 'E' && game->collectible > 0)
 			return ;
 		game->move++;
 		move_count(game->move);
@@ -63,7 +64,7 @@ static void	update_player_position(t_game *game, int a, int b)
 		game->map[game->y + b][game->x + a] = 'P';
 		game->y += b;
 		game->x += a;
-		render_map(game);
+		render_map(*game);
 	}
 }
 
@@ -92,8 +93,8 @@ int	close_window(t_game *game)
 		mlx_destroy_image(game->mlx, game->carrot);
 	if (game->door)
 		mlx_destroy_image(game->mlx, game->door);
-	if (game->soil)
-		mlx_destroy_image(game->mlx, game->soil);
+	if (game->floor)
+		mlx_destroy_image(game->mlx, game->floor);
 	if (game->win)
 		mlx_destroy_window(game->mlx, game->win);
 	if (game->mlx)

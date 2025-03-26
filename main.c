@@ -6,7 +6,7 @@
 /*   By: sencetin <sencetin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/19 16:15:13 by sencetin          #+#    #+#             */
-/*   Updated: 2025/03/26 13:15:22 by sencetin         ###   ########.fr       */
+/*   Updated: 2025/03/26 15:01:21 by sencetin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ void	inital(t_game *game)
 	game->player = NULL;
 	game->door = NULL;
 	game->carrot = NULL;
-	game->soil = NULL;
+	game->floor = NULL;
 	game->wall = NULL;
 	game->mlx = NULL;
 	game->win = NULL;
@@ -110,7 +110,7 @@ int	main(int ac, char **av)
 	game = control(game);
 	init_window(&game);
 	load_textures(&game);
-	render_map(&game);
+	render_map(game);
 	mlx_hook(game.win, 2, 1, key_event, &game);
 	mlx_hook(game.win, 17, 0, close_window, &game);
 	mlx_loop(game.mlx);
