@@ -6,7 +6,7 @@
 /*   By: sencetin <sencetin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/20 22:16:25 by sencetin          #+#    #+#             */
-/*   Updated: 2025/03/26 13:18:35 by sencetin         ###   ########.fr       */
+/*   Updated: 2025/03/26 13:27:08 by sencetin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,8 @@ void	initialize_player_position(t_game *game)
 
 static void	update_player_position(t_game *game, int a, int b)
 {
+	game->move++;
+	move_count(game->move);
 	if (game->map[game->y + b][game->x + a] != '1')
 	{
 		if (game->map[game->y + b][game->x + a] == 'C')
@@ -56,8 +58,6 @@ static void	update_player_position(t_game *game, int a, int b)
 		}
 		else if (game->map[game->y + b][game->x + a] == 'E'&& game->collectible > 0)
 			return ;
-		game->move++;
-		move_count(game->move);
 		game->map[game->y][game->x] = '0';
 		game->map[game->y + b][game->x + a] = 'P';
 		game->y += b;
