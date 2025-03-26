@@ -6,7 +6,7 @@
 /*   By: sencetin <sencetin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/19 16:15:13 by sencetin          #+#    #+#             */
-/*   Updated: 2025/03/26 15:01:21 by sencetin         ###   ########.fr       */
+/*   Updated: 2025/03/26 19:22:25 by sencetin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ void	newline_check(char *line)
 		}
 		i++;
 	}
-	if (line[0] == '\n' || line[len - 1] == '\n')
+	if (line[0] == '\n' || len == 0 || line[len - 1] == '\n')
 	{
 		ft_putstr_fd("Error: Invalid map!\n", 2);
 		free(line);
@@ -62,7 +62,7 @@ void	check_file_extension(char *av)
 	int	len;
 
 	len = ft_strlen(av);
-	if (len < 4 || ft_strncmp(av + len - 4, ".ber", 4) != 0)
+	if (len < 5 || ft_strncmp(av + len - 4, ".ber", 4) != 0)
 	{
 		ft_putstr_fd("Error: File extension must be .ber\n", 2);
 		exit (1);
@@ -101,7 +101,10 @@ int	main(int ac, char **av)
 	t_game	game;
 
 	if (ac != 2)
+	{
+		ft_putstr_fd("Error: Invalid number of arguments!\n", 2);
 		return (INVALID_ARG);
+	}
 	check_file_extension(av[1]);
 	inital(&game);
 	game = read_map(game, av);

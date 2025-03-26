@@ -6,7 +6,7 @@
 /*   By: sencetin <sencetin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/20 17:29:38 by sencetin          #+#    #+#             */
-/*   Updated: 2025/03/26 14:56:06 by sencetin         ###   ########.fr       */
+/*   Updated: 2025/03/26 15:49:19 by sencetin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,10 @@ void	load_textures(t_game *game)
 			"textures/grass64.xpm", &x, &x);
 	if (!game->player || !game->wall || !game->carrot
 		|| !game->door || !game->floor)
-		ft_error(*game, "Texture loading failed!\n");
+	{
+		ft_putstr_fd("Texture loading failed!\n", 2);
+		close_window(game);
+	}
 }
 
 void	render_map(t_game g)
